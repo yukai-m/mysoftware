@@ -1,0 +1,123 @@
+/* 試合中入力（打席ごと）モード専用スタイル */
+
+.current-batter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+.current-batter .order {
+  background: var(--main);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 44px;
+  text-align: center;
+  white-space: nowrap;
+}
+.current-batter .name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex: 1;
+}
+.current-batter .nav-batter {
+  display: flex;
+  gap: 6px;
+}
+.btn-mini {
+  background: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.btn-mini:hover { background: #cbd5e1; }
+
+/* 野球フィールド（SVG） */
+.field-wrap { text-align: center; }
+.field-svg {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  touch-action: manipulation;
+}
+.pos-marker { cursor: pointer; }
+.pos-marker circle {
+  fill: #ffffff;
+  stroke: #1f2933;
+  stroke-width: 1.5;
+  transition: fill 0.1s;
+}
+.pos-marker text {
+  font-size: 13px;
+  font-weight: 700;
+  fill: #1f2933;
+  pointer-events: none;
+  dominant-baseline: central;
+  text-anchor: middle;
+}
+.pos-marker.sel circle { fill: var(--main); stroke: var(--main-dark); }
+.pos-marker.sel text { fill: #ffffff; }
+.field-static .pos-marker { cursor: default; }
+
+/* 選択肢ボタン群 */
+.choice-group { margin: 14px 0; }
+.choice-group > .label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.chip:hover { background: #f1f5f9; }
+.chip.sel { background: var(--main); color: #fff; border-color: var(--main-dark); }
+.chip.hit.sel { background: #16a34a; border-color: #15803d; }
+.chip.out.sel { background: #dc2626; border-color: #b91c1c; }
+
+.result-block { margin-top: 6px; }
+.result-block .sub-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 8px 0 4px;
+}
+
+/* 選択中サマリー＋記録ボタン */
+.selection-bar {
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background: #f8fafc;
+}
+.selection-bar .summary { font-weight: 700; margin-bottom: 10px; min-height: 1.4em; }
+.selection-bar .summary .muted { color: var(--muted); font-weight: 400; }
+
+/* 打球方向マップ（スプレーチャート）凡例 */
+.legend { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+.legend span { display: inline-flex; align-items: center; gap: 5px; }
+.dot-legend { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.dot-hit { background: #16a34a; }
+.dot-err { background: #f59e0b; }
+.dot-out { background: #dc2626; }
+
+.spray-dot { stroke: #ffffff; stroke-width: 1; }
+
+/* 打順エディタ */
+#lineup-body .ln-order { text-align: center; color: var(--muted); width: 40px; }

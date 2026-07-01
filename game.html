@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>草野球スコア記録 — 試合中入力</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+  <header>
+    <h1>⚾ 草野球スコア記録</h1>
+    <p class="subtitle">試合の進行に合わせて、打席ごとに記録します</p>
+  </header>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-link">合計入力（かんたん）</a>
+    <a href="game.html" class="nav-link active">試合中入力（打席ごと）</a>
+  </nav>
+
+  <main>
+    <!-- 打順登録 -->
+    <section class="card" aria-labelledby="lineup-title">
+      <h2 id="lineup-title">1. 打順を登録</h2>
+      <p class="hint">試合前に打順（メンバー）を登録します。記録するたびに次の打者へ自動で進みます。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th class="ln-order">打順</th><th>選手名</th><th class="col-del"><span class="sr-only">削除</span></th></tr>
+          </thead>
+          <tbody id="lineup-body"></tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <button type="button" id="add-lineup" class="btn btn-sub">＋ 選手を追加</button>
+        <button type="button" id="save-lineup" class="btn btn-main">打順を登録</button>
+      </div>
+      <p id="lineup-msg" class="message" role="alert" aria-live="polite"></p>
+    </section>
+
+    <!-- 試合中入力 -->
+    <section class="card" aria-labelledby="input-title">
+      <h2 id="input-title">2. 打席を記録</h2>
+
+      <div id="current-batter" class="current-batter">
+        <span class="order">–</span>
+        <span class="name">打順を登録してください</span>
+        <span class="nav-batter">
+          <button type="button" id="prev-batter" class="btn-mini">◀ 前</button>
+          <button type="button" id="next-batter" class="btn-mini">次 ▶</button>
+        </span>
+      </div>
+
+      <p class="hint">① フィールドで打球方向をタップ → ② 打球の種類 → ③ 結果 の順に選び、「この打席を記録」を押します。</p>
+
+      <div class="field-wrap">
+        <div id="field"></div>
+      </div>
+
+      <div class="choice-group">
+        <div class="label">② 打球の種類</div>
+        <div class="choices" id="ball-types">
+          <button type="button" class="chip" data-ball="ゴロ">ゴロ</button>
+          <button type="button" class="chip" data-ball="フライ">フライ</button>
+          <button type="button" class="chip" data-ball="ライナー">ライナー</button>
+        </div>
+      </div>
+
+      <div class="choice-group">
+        <div class="label">③ 結果</div>
+        <div class="result-block">
+          <div class="sub-label">打球あり（②③に加えてフィールドで方向を選択）</div>
+          <div class="choices">
+            <button type="button" class="chip hit" data-result="安打">安打</button>
+            <button type="button" class="chip hit" data-result="二塁打">二塁打</button>
+            <button type="button" class="chip hit" data-result="三塁打">三塁打</button>
+            <button type="button" class="chip hit" data-result="本塁打">本塁打</button>
+            <button type="button" class="chip out" data-result="アウト">アウト</button>
+            <button type="button" class="chip out" data-result="併殺">併殺打</button>
+            <button type="button" class="chip out" data-result="エラー">エラー出塁</button>
+            <button type="button" class="chip out" data-result="野選">野選</button>
+          </div>
+          <div class="sub-label">打球なし（方向・打球種類は不要）</div>
+          <div class="choices">
+            <button type="button" class="chip out" data-result="三振">三振</button>
+            <button type="button" class="chip" data-result="四球">四球</button>
+            <button type="button" class="chip" data-result="死球">死球</button>
+            <button type="button" class="chip" data-result="犠打">犠打</button>
+            <button type="button" class="chip" data-result="犠飛">犠飛</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="selection-bar">
+        <div class="summary" id="selection-summary"><span class="muted">まだ選択されていません。</span></div>
+        <div class="actions">
+          <button type="button" id="record" class="btn btn-main">この打席を記録</button>
+          <button type="button" id="undo" class="btn btn-sub">1つ戻す</button>
+          <button type="button" id="clear-selection" class="btn btn-sub">選択をクリア</button>
+        </div>
+        <p id="record-msg" class="message" role="alert" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- 成績（打率一覧） -->
+    <section class="card" aria-labelledby="stats-title">
+      <h2 id="stats-title">3. 成績（自動集計）</h2>
+      <p class="hint">記録するたびに打率（安打 ÷ 打数）を自動計算します。四球・犠打などは打数に数えません。</p>
+      <div class="table-wrap">
+        <table id="stats-table">
+          <thead>
+            <tr>
+              <th class="ln-order">打順</th>
+              <th>選手名</th>
+              <th class="col-num">打席</th>
+              <th class="col-num">打数</th>
+              <th class="col-num">安打</th>
+              <th class="col-num">本</th>
+              <th class="col-num">四死</th>
+              <th class="col-num">三振</th>
+              <th class="col-num">打率</th>
+            </tr>
+          </thead>
+          <tbody id="stats-body"></tbody>
+          <tfoot id="stats-foot"></tfoot>
+        </table>
+      </div>
+      <p id="stats-empty" class="hint empty-note">まだ記録がありません。</p>
+    </section>
+
+    <!-- 打球方向マップ -->
+    <section class="card" aria-labelledby="spray-title">
+      <h2 id="spray-title">4. 打球方向マップ</h2>
+      <p class="hint">記録した打球の方向を可視化します（緑=安打／橙=エラー／赤=アウト）。</p>
+      <div class="field-wrap">
+        <div id="spray-field" class="field-static"></div>
+      </div>
+      <div class="legend">
+        <span><i class="dot-legend dot-hit"></i>安打</span>
+        <span><i class="dot-legend dot-err"></i>エラー</span>
+        <span><i class="dot-legend dot-out"></i>アウト・野選など</span>
+      </div>
+      <div class="actions">
+        <button type="button" id="clear-game" class="btn btn-danger">この試合のデータを消去</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>データはこのブラウザ内（localStorage）にのみ保存されます。「合計入力」モードとは別に保存されます。</p>
+  </footer>
+
+  <script src="game.js"></script>
+</body>
+</html>
