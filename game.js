@@ -44,6 +44,10 @@ const RESULTS = {
   "犠飛":   { ab: false, hit: false, ball: true,  cat: "sac" },
 };
 
+// 表示用ラベル（内部キー・保存値は変更せず、画面表示だけ差し替える）
+const RESULT_LABELS = { "野選": "野選（FC）" };
+function labelOf(result) { return RESULT_LABELS[result] || result; }
+
 // ---- 状態 ----
 let data = load();            // { lineup, plays, currentIndex, seq }
 let sel = { position: null, ballType: null, result: null };
@@ -217,7 +221,7 @@ function syncSelectionUI() {
   const parts = [];
   if (sel.position) parts.push(sel.position);
   if (sel.ballType) parts.push(sel.ballType);
-  if (sel.result) parts.push(sel.result);
+  if (sel.result) parts.push(labelOf(sel.result));
   const label = document.createElement("span");
   label.textContent = (data.currentIndex + 1) + "番 " + batter.name + "：";
   summaryEl.appendChild(label);
@@ -235,8 +239,8 @@ function syncSelectionUI() {
 // 記録・取り消し
 // ---------------------------------------------------------------------------
 function describe(play) {
-  if (play.position) return [play.position, play.ballType, play.result].filter(Boolean).join("・");
-  return play.result;
+  if (play.position) return [play.position, play.ballType, labelOf(play.result)].filter(Boolean).join("・");
+  return labelOf(play.result);
 }
 
 function onRecord() {
