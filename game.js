@@ -310,7 +310,8 @@ function renderLineupEditor() {
   if (data.lineup.length > 0) {
     data.lineup.forEach((p, i) => lineupBody.appendChild(lineupRow(i + 1, p.name, p.id)));
   } else {
-    for (let k = 0; k < 3; k++) lineupBody.appendChild(lineupRow(k + 1, "", ""));
+    // 打順は既定で9人分の空行を用意する（「＋選手を追加」で増減可）
+    for (let k = 0; k < 9; k++) lineupBody.appendChild(lineupRow(k + 1, "", ""));
   }
 }
 
