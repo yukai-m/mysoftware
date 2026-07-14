@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>草野球スコア記録 — 通算成績・グラフ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="total.css">
+</head>
+<body>
+  <header>
+    <h1>⚾ 草野球スコア記録</h1>
+    <p class="subtitle">保存した試合をまとめて、通算成績と打率の推移を表示します</p>
+  </header>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-link">合計入力（かんたん）</a>
+    <a href="game.html" class="nav-link">試合中入力（打席ごと）</a>
+    <a href="total.html" class="nav-link active">通算成績・グラフ</a>
+  </nav>
+
+  <main>
+    <!-- 通算成績 -->
+    <section class="card" aria-labelledby="career-title">
+      <h2 id="career-title">1. 通算成績</h2>
+      <p class="hint">「試合中入力」で保存した全試合を、選手名ごとに合算します。打率 ＝ 通算安打 ÷ 通算打数。</p>
+      <div class="table-wrap">
+        <table id="career-table">
+          <thead>
+            <tr>
+              <th>選手名</th>
+              <th class="col-num">試合</th>
+              <th class="col-num">打席</th>
+              <th class="col-num">打数</th>
+              <th class="col-num">安打</th>
+              <th class="col-num">本</th>
+              <th class="col-num">四死</th>
+              <th class="col-num">三振</th>
+              <th class="col-num">通算打率</th>
+            </tr>
+          </thead>
+          <tbody id="career-body"></tbody>
+          <tfoot id="career-foot"></tfoot>
+        </table>
+      </div>
+      <p id="career-empty" class="hint empty-note">まだ保存された試合がありません。「試合中入力」ページで試合を記録し、「この試合を保存」を押してください。</p>
+    </section>
+
+    <!-- 打率推移グラフ -->
+    <section class="card" aria-labelledby="chart-title">
+      <h2 id="chart-title">2. 打率の推移</h2>
+      <div class="chart-controls">
+        <label for="chart-target" class="hint">表示対象：</label>
+        <select id="chart-target">
+          <option value="">チーム全体</option>
+        </select>
+      </div>
+      <div class="chart-legend" id="chart-legend">
+        <span><i class="key key-game"></i>その試合の打率</span>
+        <span><i class="key key-career"></i>通算打率（累積）</span>
+      </div>
+      <div id="chart" class="chart-area"></div>
+      <div id="chart-tooltip" class="chart-tooltip" hidden></div>
+      <p id="chart-empty" class="hint empty-note">グラフは試合を保存すると表示されます。</p>
+    </section>
+
+    <!-- 保存済みの試合 -->
+    <section class="card" aria-labelledby="games-title">
+      <h2 id="games-title">3. 保存済みの試合</h2>
+      <div class="table-wrap">
+        <table id="games-table">
+          <thead>
+            <tr>
+              <th class="col-rank">試合</th>
+              <th>日付</th>
+              <th class="col-num">打席</th>
+              <th class="col-num">打数</th>
+              <th class="col-num">安打</th>
+              <th class="col-num">チーム打率</th>
+              <th class="col-del"><span class="sr-only">削除</span></th>
+            </tr>
+          </thead>
+          <tbody id="games-body"></tbody>
+        </table>
+      </div>
+      <p id="games-empty" class="hint empty-note">保存済みの試合はありません。</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>データはこのブラウザ内（localStorage）にのみ保存されます。</p>
+  </footer>
+
+  <script src="total.js"></script>
+</body>
+</html>

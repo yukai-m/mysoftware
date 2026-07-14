@@ -12,6 +12,7 @@
  */
 
 const GAME_KEY = "kusayakyu_game_v1";
+const GAMES_KEY = "kusayakyu_games_v1"; // 保存済みの試合一覧（通算成績ページで集計）
 const SVGNS = "http://www.w3.org/2000/svg";
 
 // 守備位置（背番号順）と、フィールド上の座標（viewBox 0 0 300 300）
@@ -447,6 +448,48 @@ function showMsg(el, text, type) {
   el.className = "message" + (type ? " " + type : "");
 }
 
+// ---------------------------------------------------------------------------
+// 試合の保存（通算成績ページで集計する）
+// ---------------------------------------------------------------------------
+function loadGames() {
+  try {
+    const raw = localStorage.getItem(GAMES_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    return Array.isArray(list) ? list : [];
+  } catch (e) {
+    console.error("保存済み試合の読み込みに失敗しました:", e);
+    return [];
+  }
+}
+
+function onSaveGame() {
+  if (data.plays.length === 0) {
+    showMsg(recordMsg, "まだ打席が記録されていません。記録してから保存してください。", "error");
+    return;
+  }
+  if (!confirm("この試合を保存します。保存後は現在の記録がクリアされ、次の試合を記録できます。よろしいですか？")) return;
+
+  const games = loadGames();
+  const d = new Date();
+  const date = d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0");
+  games.push({
+    id: "g" + (data.seq++),
+    date,
+    lineup: JSON.parse(JSON.stringify(data.lineup)),
+    plays: JSON.parse(JSON.stringify(data.plays)),
+  });
+  localStorage.setItem(GAMES_KEY, JSON.stringify(games));
+
+  // 打順は次の試合用に残し、記録だけクリアする
+  data.plays = [];
+  data.currentIndex = 0;
+  save();
+  renderAll();
+  showMsg(recordMsg, "試合を保存しました（通算 " + games.length + " 試合）。「通算成績・グラフ」ページで確認できます。", "ok");
+}
+
 function onClearGame() {
   if (!confirm("この試合の打順・記録をすべて消去します。よろしいですか？")) return;
   localStorage.removeItem(GAME_KEY);
@@ -474,6 +517,7 @@ function init() {
     showMsg(recordMsg, "", "");
   });
   document.getElementById("clear-game").addEventListener("click", onClearGame);
+  document.getElementById("save-game").addEventListener("click", onSaveGame);
 
   document.querySelectorAll("[data-ball]").forEach((b) => {
     b.addEventListener("click", () => onSelectBallType(b.dataset.ball));

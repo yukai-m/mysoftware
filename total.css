@@ -1,0 +1,63 @@
+/* 通算成績・グラフページ専用スタイル */
+
+/* 1列目（選手名・第n戦）は折り返さない */
+#career-table th:first-child, #career-table td:first-child,
+#games-table th:first-child, #games-table td:first-child {
+  white-space: nowrap;
+}
+
+.chart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.chart-controls .hint { margin: 0; }
+#chart-target {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #fff;
+}
+
+/* 凡例: 系列色はテキストではなくチップに載せる */
+.chart-legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.key { display: inline-block; width: 18px; height: 0; border-top-width: 3px; border-top-style: solid; border-radius: 2px; }
+.key-game { border-top-color: #2563eb; }
+.key-career { border-top-color: #1baf7a; border-top-style: dashed; }
+
+.chart-area { position: relative; }
+.chart-area svg { width: 100%; height: auto; display: block; }
+
+/* グリッドは控えめなヘアライン、軸ラベルはミュート色 */
+.chart-grid { stroke: #e8ecf2; stroke-width: 1; }
+.chart-axis-text { fill: #8a94a3; font-size: 11px; }
+.chart-label { fill: #1f2933; font-size: 12px; font-weight: 700; }
+
+.chart-line-game { stroke: #2563eb; stroke-width: 2; fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.chart-line-career { stroke: #1baf7a; stroke-width: 2; fill: none; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: 6 5; }
+.chart-dot-game { fill: #2563eb; stroke: #ffffff; stroke-width: 2; }
+.chart-dot-career { fill: #1baf7a; stroke: #ffffff; stroke-width: 2; }
+.chart-hit { fill: transparent; cursor: pointer; }
+
+.chart-tooltip {
+  position: absolute;
+  background: #1f2933;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+  transform: translate(-50%, -130%);
+}

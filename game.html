@@ -16,6 +16,7 @@
   <nav class="nav">
     <a href="index.html" class="nav-link">合計入力（かんたん）</a>
     <a href="game.html" class="nav-link active">試合中入力（打席ごと）</a>
+    <a href="total.html" class="nav-link">通算成績・グラフ</a>
   </nav>
 
   <main>
@@ -126,6 +127,10 @@
         </table>
       </div>
       <p id="stats-empty" class="hint empty-note">まだ記録がありません。</p>
+      <div class="actions">
+        <button type="button" id="save-game" class="btn btn-main">この試合を保存して次の試合へ</button>
+      </div>
+      <p class="hint">保存すると「通算成績・グラフ」ページに集計されます（打順は残り、記録はクリアされます）。</p>
     </section>
 
     <!-- 打球方向マップ -->
