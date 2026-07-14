@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>草野球スコア記録</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>⚾ 草野球スコア記録</h1>
+    <p class="subtitle">1試合分の打数・安打数を選手ごとに登録し、打率を自動計算します</p>
+  </header>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-link active">合計入力（かんたん）</a>
+    <a href="game.html" class="nav-link">試合中入力（打席ごと）</a>
+    <a href="total.html" class="nav-link">通算成績・グラフ</a>
+  </nav>
+
+  <main>
+    <!-- 入力エリア -->
+    <section class="card" aria-labelledby="input-title">
+      <h2 id="input-title">1. 入力（1試合分）</h2>
+      <p class="hint">選手名・打数・安打数を入力してください。行を増やせば複数選手をまとめて登録できます。</p>
+
+      <div class="table-wrap">
+        <table id="input-table">
+          <thead>
+            <tr>
+              <th class="col-name">選手名</th>
+              <th class="col-num">打数</th>
+              <th class="col-num">安打数</th>
+              <th class="col-del"><span class="sr-only">削除</span></th>
+            </tr>
+          </thead>
+          <tbody id="input-body">
+            <!-- JSで行を生成 -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="add-row" class="btn btn-sub">＋ 選手を追加</button>
+        <button type="button" id="register" class="btn btn-main">登録して打率を計算</button>
+        <button type="button" id="clear-all" class="btn btn-danger">全データ消去</button>
+      </div>
+
+      <p id="message" class="message" role="alert" aria-live="polite"></p>
+    </section>
+
+    <!-- 出力エリア -->
+    <section class="card" aria-labelledby="result-title">
+      <h2 id="result-title">2. 打率一覧（出力）</h2>
+      <p class="hint">打率 ＝ 安打数 ÷ 打数（小数点第3位まで表示。打率の高い順に並びます）</p>
+
+      <div class="table-wrap">
+        <table id="result-table">
+          <thead>
+            <tr>
+              <th class="col-rank">順位</th>
+              <th class="col-name">選手名</th>
+              <th class="col-num">打数</th>
+              <th class="col-num">安打数</th>
+              <th class="col-num">打率</th>
+            </tr>
+          </thead>
+          <tbody id="result-body">
+            <!-- JSで行を生成 -->
+          </tbody>
+          <tfoot id="result-foot">
+            <!-- チーム合計 -->
+          </tfoot>
+        </table>
+      </div>
+
+      <p id="empty-note" class="hint empty-note">まだ登録がありません。上の入力欄から登録してください。</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>データはこのブラウザ内（localStorage）にのみ保存されます。ログイン・デバイス間同期はありません。</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
